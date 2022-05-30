@@ -1,9 +1,9 @@
 const allowedCors = [
   'https://praktikum.tk',
   'http://praktikum.tk',
-  'localhost:3000',
-  'http://localhost:3000',
-  'https://localhost:3000',
+  'localhost:3001',
+  'http://localhost:3001',
+  'https://localhost:3001',
   // 'http://51.250.108.145:3000',
   // 'https://51.250.108.145:3000',
   // 'http://ad.mesto.nomoredomains.xyz',
