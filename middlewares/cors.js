@@ -4,12 +4,10 @@ const allowedCors = [
   'localhost:3001',
   'http://localhost:3001',
   'https://localhost:3001',
-  // 'http://51.250.108.145:3000',
-  // 'https://51.250.108.145:3000',
-  // 'http://ad.mesto.nomoredomains.xyz',
-  // 'https://ad.mesto.nomoredomains.xyz',
-  // 'http://api.ad.mesto.students.nomoreparties.sbs',
-  // 'https://api.ad.mesto.students.nomoreparties.sbs',
+  'http://51.250.108.145:3001',
+  'https://51.250.108.145:3001',
+  'http://api.ad.diploma.students.nomoredomains.sbs',
+  'https://api.ad.diploma.students.nomoredomains.sbs',
 ];
 
 module.exports = (req, res, next) => {
