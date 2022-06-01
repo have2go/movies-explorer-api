@@ -2,51 +2,29 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
-const { celebrate, Joi, errors } = require('celebrate');
-
-require('dotenv').config();
-
-const usersRoutes = require('./routes/users');
-const moviesRoutes = require('./routes/movies');
+const { errors } = require('celebrate');
+const router = require('./routes');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const errorHandler = require('./middlewares/error-handler');
 const cors = require('./middlewares/cors');
-const { login, createUser } = require('./controllers/users');
-const auth = require('./middlewares/auth');
-const NotFoundError = require('./errors/404-notfound');
+
+require('dotenv').config();
 
 const app = express();
 
-const { PORT = 3001 } = process.env;
-mongoose.connect('mongodb://localhost:27017/bitfilmsdb');
+const { PORT = 3001, NODE_ENV, DB_URL } = process.env;
+mongoose.connect(`${NODE_ENV === 'production' ? DB_URL : 'mongodb://localhost:27017/bitfilmsdb'}`);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
 app.use(helmet());
+
 app.use(cors);
 
 app.use(requestLogger); // подключаем логгер запросов
 
-app.post('/signup', celebrate({
-  body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
-    email: Joi.string().required().email(),
-    password: Joi.string().required(),
-  }),
-}), createUser);
-app.post('/signin', celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().required().email(),
-    password: Joi.string().required(),
-  }),
-}), login);
-
-app.use('/', auth, usersRoutes);
-app.use('/', auth, moviesRoutes);
-
-app.all('*', auth, () => {
-  throw new NotFoundError('Ошибка 404. Страница не найдена');
-});
+app.use(router);
 
 app.use(errorLogger); // подключаем логгер ошибок
 

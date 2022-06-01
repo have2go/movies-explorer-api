@@ -47,6 +47,10 @@ movies.post('/movies', celebrate({
   }),
 }), createMovie);
 
-movies.delete('/movies/:movieId', deleteMovie);
+movies.delete('/movies/:movieId', celebrate({
+  params: Joi.object().keys({
+    movieId: Joi.string().length(24).hex().required(),
+  }),
+}), deleteMovie);
 
 module.exports = movies;
