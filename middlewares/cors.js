@@ -1,13 +1,18 @@
 const allowedCors = [
   'https://praktikum.tk',
   'http://praktikum.tk',
+  'localhost:3000',
+  'http://localhost:3000',
+  'https://localhost:3000',
   'localhost:3001',
   'http://localhost:3001',
   'https://localhost:3001',
-  'http://51.250.108.145:3001',
-  'https://51.250.108.145:3001',
+  'http://178.154.195.183:3001',
+  'https://178.154.195.183:3001',
   'http://api.ad.diploma.students.nomoredomains.sbs',
   'https://api.ad.diploma.students.nomoredomains.sbs',
+  'http://ad.diploma.nomoreparties.sbs',
+  'https://ad.diploma.nomoreparties.sbs',
 ];
 
 module.exports = (req, res, next) => {

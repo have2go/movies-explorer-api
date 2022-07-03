@@ -65,20 +65,20 @@ module.exports.createMovie = (req, res, next) => {
 module.exports.deleteMovie = (req, res, next) => {
   const userId = req.user._id;
 
-  Movie.findById(req.params.movieId)
+  Movie.findById(req.params.movieId).select('+owner')
     .orFail(() => {
       throw new NotFoundError('Фильм не найден');
     })
     .then((movie) => {
-      if (userId !== movie.owner.toString()) {
+      if (userId === movie.owner.toString()) {
+        movie.remove()
+          .then((movieToDelete) => {
+            res.send(JSON.stringify(`Фильм ${movieToDelete.nameRU} удален`));
+          })
+          .catch(next);
+      } else {
         throw new ForbiddenError('Вы не можете удалять чужие фильмы');
       }
-
-      Movie.findByIdAndRemove(req.params.movieId)
-        .then((movieToDelete) => {
-          res.send(`Фильм ${movieToDelete.nameRU} удален`);
-        })
-        .catch(next);
     })
     .catch((err) => {
       if (err.name === 'CastError') {
